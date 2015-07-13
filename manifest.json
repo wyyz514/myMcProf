@@ -7,12 +7,14 @@
         "default_icon":"img/logo.png",
         "default_title":"RMP-McGill"
     },
-    "permissions":["tabs","http://*.mcgill.ca/*","https://*.mcgill.ca/*"],
+    "permissions":["tabs","http://*.mcgill.ca/*","https://*.mcgill.ca/*","http://www.ratemyprofessor.com/*"],
     "background":{
-        "scripts":["js/background.js"]
+        "page":"background.html",
+        "persistent":false
     },
     "content_scripts":[{
-        "matches":["http://*.mcgill.ca/*","http://*.mcgill.ca/*"],
-        "js":["js/content.js"]
+        "matches":["http://*.mcgill.ca/*","https://*.mcgill.ca/*"],
+        "js":["js/content.js"],
+        "run_at":"document_end"
     }]
 }
