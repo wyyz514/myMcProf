@@ -13,7 +13,7 @@
         "persistent":false
     },
     "content_scripts":[{
-        "matches":["http://*.mcgill.ca/*","https://*.mcgill.ca/*"],
+        "matches":["http://*.mcgill.ca/*","https://*.mcgill.ca/*","http://*/*"],
         "js":["js/content.js"],
         "run_at":"document_end"
     }]
