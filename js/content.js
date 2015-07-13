@@ -5,7 +5,8 @@ indices.courseName = 2;
 indices.courseNumber = 3;
 
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    console.log(msg);
+    console.log(msg.message);
+    return true;
 });
 
 function makeProfNamesClickable()
@@ -42,8 +43,8 @@ function sendMessage(name)
 {
     console.log("Sending message");
     chrome.runtime.sendMessage({query:name,
-                                type:"prof"},function(response){
-        console.log(response);
+                                type:"PROF"},function(response){
+        console.log(response.message);
     });
 }
 
