@@ -44,11 +44,9 @@ function findInPage(response,searchTerm,searchEndTerm)
     //result will be everything from index 0 to the end
     //resultEndIndex will be the index of the less than character on the ul closing tag
     //so we add the length and 1 so the whole tag is included in result
-    console.log(result);
     document.querySelector("#rmp").innerHTML = result;
     chrome.tabs.query({active:true,currentWindow:true},function(tabs){
-        chrome.tabs.sendMessage(tabs[0].id,{message:result},function(response){
-        });
+        
     });
 }
 
