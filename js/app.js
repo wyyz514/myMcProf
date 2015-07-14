@@ -48,11 +48,12 @@ app.content = (function(){
 })();
 
 app.background = (function(){
-    
+
 var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&queryBy=teacherName&schoolName=mcgill+university&schoolID=&query=";
     
     function makeRequest(url)
     {
+        console.log("Making request for "+url);
         var result;
         var promise = new Promise(function(resolve,reject){
             var xhr = new XMLHttpRequest();
@@ -78,10 +79,12 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 //<p>What you might want --> </p>
     function findInPage(response,queryType,searchTerm,searchEndTerm)
     {
+        app.background.sendMessage("LOAD");
+        console.log("Looking for "+searchTerm+" in page"+":"+queryType);
         var resultIndex = response.search(searchTerm);
         if(resultIndex < 0)
         {
-            sendMessage("Professor could not be found");
+            sendMessage.call(app.backgroundContext,"Professor could not be found");
             return;
         }
         var result = response.slice(resultIndex);
@@ -144,11 +147,12 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
                 message[tempArr[0]] = tempArr[1];
             })(index);
         }
-        sendMessage(message);
+        sendMessage.call(app.backgroundContext,message);
     }
 
     function sendMessage(message)
     {
+        console.log(message);
         chrome.tabs.query({active:true,currentWindow:true},function(tabs){
             chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){
                 //don't have to do anything
@@ -167,11 +171,6 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 })();
 
 app.profDetails = (function(){
-    
-    function showSpinner()
-    {
-        
-    }
     
     function addCard()
     {
