@@ -49,7 +49,7 @@ app.content = (function(){
 
 app.background = (function(){
     
-    var baseURL = "http://www.ratemyprofessors.com/search.jsp?          queryoption=HEADER&queryBy=teacherName&schoolName=mcgill+university&schoolID=&query=";
+var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&queryBy=teacherName&schoolName=mcgill+university&schoolID=&query=";
     
     function makeRequest(url)
     {
