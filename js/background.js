@@ -38,7 +38,7 @@ function findInPage(response,queryType,searchTerm,searchEndTerm)
     var resultIndex = response.search(searchTerm);
     if(resultIndex < 0)
     {
-        console.log("Professor could not be found");
+        sendMessage("Professor could not be found");
         return;
     }
     var result = response.slice(resultIndex);
@@ -101,9 +101,7 @@ function getProfInfo()
             message[tempArr[0]] = tempArr[1];
         })(index);
     }
-    chrome.tabs.query({active:true,currentWindow:true},function(tabs){
-        chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){});
-    });
+    sendMessage(message);
 }
 
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
@@ -117,3 +115,12 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     
     return true; //keep channel open
 });
+
+function sendMessage(message)
+{
+    chrome.tabs.query({active:true,currentWindow:true},function(tabs){
+        chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){
+            //don't have to do anything
+        });
+    });
+}
