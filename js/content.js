@@ -1,20 +1,15 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    console.log(msg.message);
+    if(msg.message == "LOAD")
+    {
+        document.querySelector(".card").style.display = "block";
+        document.querySelector("#loading").style.display = "block";
+    }
+    else
+    {
+        console.log(msg.message);
+    }
     return true;
 });
-
-function appendPanel()
-{
-    var div = document.createElement("div");
-    div.style.position = "fixed";
-    div.style.top = "30vh";
-    div.style.height = "30vh";
-    div.style.width = "30vw";
-    div.style.backgroundColor = "#F5EAEA";
-    div.style.opacity = 0.8;
-    div.style.zIndex = 1000;
-    document.body.appendChild(div);
-}
 
 app.content.makeProfNamesClickable();
 
