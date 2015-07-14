@@ -1,0 +1,89 @@
+.container
+{
+    position:fixed;
+    height:17em;
+    width:16em;
+    top:50vh;
+    z-index:1000;
+}
+
+.card
+{
+    position:relative;
+    height:17em;
+    width:16em;
+    margin-left:10px;
+    background-color:#eedddd;
+    font-family:"Franklin Gothic Medium";
+    padding:1em;
+}
+
+.row
+{
+    width:100%;
+    height:50%;
+    color:#DF0101;
+}
+
+.col-50
+{
+    float:left;
+    width:50%;
+    height:100%;
+}
+
+.col-33
+{
+    float:left;
+    width:33%;
+    height:100%;
+}
+
+.rating
+{
+    width:100%;
+    text-align:center;
+}
+
+#loading
+{
+    position:absolute;
+    height:100%;
+    width:100%;
+    background-color:#eedddd;
+    top:0;
+    left:0;
+}
+
+#logo-container
+{
+    position:relative;
+    height:30px;
+    width:30px;
+    margin:auto;
+    top:8em;
+}
+
+#logo
+{
+    height:100%;
+    width:100%;
+    background-image:url("chrome-extension://__MSG_@@extension_id__/img/logo.png");
+    background-repeat:no-repeat;   
+    background-size:100%;
+    border-radius:100%;
+    -webkit-animation:pulse 2s infinite;
+}
+
+@-webkit-keyframes pulse
+{
+    from
+    {
+        box-shadow:0 0 0 3px #F78181;
+    }
+    
+    to
+    {
+        box-shadow:0 0 5px 20px #eedddd;
+    }
+}
