@@ -18,3 +18,4 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     return true; //keep channel open
 });
 
+app.backgroundContext = this;
