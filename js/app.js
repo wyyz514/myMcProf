@@ -33,9 +33,10 @@ app.content = (function(){
     function sendMessage(name)
     {
         console.log("Sending message");
+        app.profDetails.toggleLoad();
         chrome.runtime.sendMessage({query:name,
                                     type:"PROF"},function(response){
-            console.log(response.message);
+            //console.log(response.message);
         });
     }
     
@@ -79,7 +80,6 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 //<p>What you might want --> </p>
     function findInPage(response,queryType,searchTerm,searchEndTerm)
     {
-        app.background.sendMessage("LOAD");
         console.log("Looking for "+searchTerm+" in page"+":"+queryType);
         var resultIndex = response.search(searchTerm);
         if(resultIndex < 0)
@@ -171,10 +171,35 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 })();
 
 app.profDetails = (function(){
+    function toggleLoad()
+    {
+        var toggle = "off";
+        var card = document.querySelector(".card");
+        var load = document.querySelector("#loading");
+        if(load.style.display.trim() == "none" || load.style.display == "")
+        {
+            toggle = "on";
+            console.log("Loading is now on");
+            card.style.display = "block";
+            load.style.display = "block";
+            return;
+        }
+        if(load.style.display.trim() == "block")
+        {
+            toggle = "off";
+            console.log("Loading is now off");
+            load.style.display = "none";
+            return;
+        }
+    }
     
     function addCard()
     {
         
     }
+    
+    return {
+        toggleLoad:toggleLoad
+    };
     
 })();
