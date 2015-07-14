@@ -16,6 +16,7 @@
     background-color:#eedddd;
     font-family:"Franklin Gothic Medium";
     padding:1em;
+    display:none;
 }
 
 .row
@@ -53,6 +54,7 @@
     background-color:#eedddd;
     top:0;
     left:0;
+    display:none;
 }
 
 #logo-container
@@ -79,7 +81,7 @@
 {
     from
     {
-        box-shadow:0 0 0 3px #F78181;
+        box-shadow:0 0 5px 0px #F78181;
     }
     
     to
