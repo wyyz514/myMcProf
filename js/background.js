@@ -35,9 +35,12 @@ function makeRequest(url)
 //<p>What you might want --> </p>
 function findInPage(response,queryType,searchTerm,searchEndTerm)
 {
-    console.log(response);
     var resultIndex = response.search(searchTerm);
-    console.log(resultIndex);
+    if(resultIndex < 0)
+    {
+        console.log("Professor could not be found");
+        return;
+    }
     var result = response.slice(resultIndex);
     var resultEndIndex = result.search(searchEndTerm);
     console.log(resultEndIndex);
@@ -53,11 +56,8 @@ function findInPage(response,queryType,searchTerm,searchEndTerm)
     }
     else if(queryType == "RATINGS")
     {
-        console.log(result);
+        getProfInfo();
     }
-    chrome.tabs.query({active:true,currentWindow:true},function(tabs){
-        
-    });
 }
 
 function performAction(response,queryType)
@@ -77,6 +77,35 @@ function performAction(response,queryType)
         }
 }
     
+function getProfInfo()
+{
+    var message = {};
+    var profOverall = document.querySelectorAll("div.left-breakdown div.breakdown-header");
+    var profRatings = document.querySelectorAll("div.left-breakdown div.faux-slides div.rating-slider");
+    var _profOverall = Array.prototype.slice.call(profOverall);
+    var _profRatings = Array.prototype.slice.call(profRatings);
+    for(var index = 0; index < _profOverall.length; index++)
+    {
+        (function(i){
+            var tempArr = _profOverall[i].innerText.split("\n");
+            if(tempArr[0].indexOf(" ") > -1)
+                tempArr[0] = tempArr[0].replace(" ","_");
+            message[tempArr[0]] = tempArr[1];
+        })(index);
+    }
+    
+    for(var index = 0; index < _profRatings.length; index++)
+    {
+        (function(i){
+            var tempArr = _profRatings[i].innerText.split("\n");
+            message[tempArr[0]] = tempArr[1];
+        })(index);
+    }
+    chrome.tabs.query({active:true,currentWindow:true},function(tabs){
+        chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){});
+    });
+}
+
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     //put request in a function that returns response
     var query = msg.query;
