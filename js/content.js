@@ -1,13 +1,6 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    if(msg.message == "LOAD")
-    {
-        document.querySelector(".card").style.display = "block";
-        document.querySelector("#loading").style.display = "block";
-    }
-    else
-    {
-        console.log(msg.message);
-    }
+    app.profDetails.toggleLoad.call(this);
+    console.log(msg.message);
     return true;
 });
 
