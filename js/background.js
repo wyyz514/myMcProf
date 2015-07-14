@@ -28,47 +28,62 @@ function makeRequest(url)
     return promise;
 }
 
-function findInPage(response,searchTerm,searchEndTerm)
+//Will only find first instance of searchEndTerm. Will not work for nested blocks if the blocks contain the searchTerm but it's not the //one you want. Example: searchEndTerm is </p>
+//<div>
+//  <p>This will be found --> </p>
+//</div>
+//<p>What you might want --> </p>
+function findInPage(response,queryType,searchTerm,searchEndTerm)
 {
+    console.log(response);
     var resultIndex = response.search(searchTerm);
+    console.log(resultIndex);
     var result = response.slice(resultIndex);
     var resultEndIndex = result.search(searchEndTerm);
-    result = result.slice(0,resultEndIndex + searchEndTerm.length + 1); 
-    //e.g. </ul> has 5 characters and we add 1 since slice stops one character before specified terminate index
-    //so if we had search term as <ul> and search end term is </ul> and the html block:
-    //<ul>
-    //  <li>Foo</li>
-    //  <li>Bar</li>
-    //</ul>
-    //then resultIndex = 0
-    //result will be everything from index 0 to the end
-    //resultEndIndex will be the index of the less than character on the ul closing tag
-    //so we add the length and 1 so the whole tag is included in result
+    console.log(resultEndIndex);
+    result = result.slice(0,resultEndIndex); 
     document.querySelector("#rmp").innerHTML = result;
+    if(queryType == "PROF")
+    {
+        var link = document.querySelector("li a").getAttribute("href");
+        console.log(link);
+        makeRequest("http://www.ratemyprofessors.com"+link).then(function(data){
+            performAction(data,"RATINGS");
+        });
+    }
+    else if(queryType == "RATINGS")
+    {
+        console.log(result);
+    }
     chrome.tabs.query({active:true,currentWindow:true},function(tabs){
         
     });
 }
 
+function performAction(response,queryType)
+{
+    switch(queryType)
+        {
+            case "PROF":
+                findInPage(response,queryType,'<ul class="listings">','</div>');
+            break;
+                
+            case "RATINGS":
+                findInPage(response,queryType,'<div class="left-breakdown">','<div class="right-breakdown">');
+            break;
+            
+            default:
+            break;
+        }
+}
+    
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     //put request in a function that returns response
     var query = msg.query;
     var queryType = msg.type;
     var url = baseURL+query;
     makeRequest(url).then(function(response){
-        switch(queryType)
-        {
-            case "PROF":
-                findInPage(response,'<ul class="listings">','</ul>');
-            break;
-                
-            case "RATINGS":
-                findInPage();
-            break;
-            
-            default:
-            break;
-        }
+       performAction(response,queryType);
     });
     
     return true; //keep channel open
