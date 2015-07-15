@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     app.profDetails.toggleLoad.call(this);
-    console.log(msg.message);
+    app.profDetails.addRatings(msg.message);
     return true;
 });
 
