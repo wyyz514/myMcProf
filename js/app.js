@@ -11,8 +11,8 @@ app.content = (function(){
         {
             (function(i){
                 _profRows[i].addEventListener("click",function(e){
-                    if(regex.exec(e.target.innerHTML) && e.target.innerHTML !== "TBA")
-                        findProfessor(e.target.innerHTML,sendMessage);
+                    if(regex.exec(e.target.innerText) && e.target.innerText !== "TBA")
+                        findProfessor(e.target.innerText,sendMessage);
                 });
             })(index);
         }
@@ -20,14 +20,27 @@ app.content = (function(){
 
     function findProfessor(names,callback)
     {
+        var _names = names.split(" ");
+        
         if(names.search(",") > -1)
         {
-            console.log("Multiple names");
+            console.info("No support for multiple names yet");
         }
-        else
+        
+        if(_names.length == 2)
         {
             callback(names);
         }
+        
+        //middle names can be ignored since RMP seems to use only first and last names for their records
+        if(_names.length == 3)
+        {
+            //fullName = first + last
+            var fullName = _names[0] +" "+ _names[2];
+            console.log(fullName);
+            callback(fullName);
+        }
+        
     }
 
     function sendMessage(name)
@@ -197,11 +210,25 @@ app.profDetails = (function(){
     
     function addRatings(ratings)
     {
-        document.getElementById("overall_quality").innerHTML = ratings["Overall_Quality"];
-        document.getElementById("avg-grade").innerHTML = ratings["Average_Grade"];
-        document.getElementById("clarity").innerHTML = ratings["Clarity"];
-        document.getElementById("helpf").innerHTML = ratings["Helpfulness"];
-        document.getElementById("easiness").innerHTML = ratings["Easiness"];
+        if(typeof ratings === "object")
+        {
+            document.getElementById("overall_quality").innerHTML = ratings["Overall_Quality"];
+            document.getElementById("avg-grade").innerHTML = ratings["Average_Grade"];
+            document.getElementById("clarity").innerHTML = ratings["Clarity"];
+            document.getElementById("helpf").innerHTML = ratings["Helpfulness"];
+            document.getElementById("easiness").innerHTML = ratings["Easiness"];
+        }
+        
+        //there is an error. Prof not found
+        if(typeof ratings === "string")
+        {
+            
+        }
+    }
+    
+    function showError()
+    {
+        
     }
     
     function addCard()
