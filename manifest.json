@@ -14,9 +14,9 @@
     },
     "content_scripts":[{
         "matches":["http://*.mcgill.ca/*","https://*.mcgill.ca/*"],
-        "js":["js/app.js","js/content.js"],
+        "js":["js/app.js","js/app_content.js","js/content.js"],
         "css":["css/style.css"],
         "run_at":"document_end"
     }],
-    "web_accessible_resources":["/templates/*","/img/*"]
+    "web_accessible_resources":["/templates/*","/img/*","/fonts/*"]
 }
