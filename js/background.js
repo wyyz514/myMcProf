@@ -10,12 +10,11 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     //put request in a function that returns response
     var query = msg.query;
     var queryType = msg.type;
-    var url = app.background.baseURL+query;
-    app.background.makeRequest(url).then(function(response){
-       app.background.performAction(response,queryType);
+    var url = background.baseURL+query;
+    app.makeRequest(url).then(function(response){
+       background.performAction(response,query,queryType);
     });
     
     return true; //keep channel open
 });
 
-app.backgroundContext = this;
