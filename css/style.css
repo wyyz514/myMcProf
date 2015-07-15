@@ -1,3 +1,10 @@
+@font-face
+{
+    src:url("chrome-extension://__MSG_@@extension_id__/fonts/SourceSansPro-Regular.otf");
+    font-family:"Source Sans Pro";
+);
+}
+
 .container
 {
     position:fixed;
@@ -13,9 +20,10 @@
     position:relative;
     height:17em;
     width:16em;
+    z-index:1001;
     margin-left:10px;
     background-color:#eedddd;
-    font-family:"Arial Narrow";
+    font-family:"Source Sans Pro";
     padding:1em;
     display:none;
 }
@@ -101,6 +109,7 @@
     font-size:20px;
     line-height:3em;
     width:100%;
+    font-weight:bold;
 }
 
 .error
@@ -122,13 +131,11 @@
     position:relative;
     margin:auto;
     height:2em;
-    width:100%;
+    width:85%;
     line-height:2em;
     top:6em;
     font-size:1em;
     font-weight:bold;
-    text-transform:uppercase;
-    font-family:"Arial Narrow":
 }
 
 .error #input-search
@@ -147,11 +154,11 @@
     border:1px solid #f0f0f0;
     height:1.5em;
     width:75%;
-    font-family:"Arial Narrow";
-    padding-left:5px;
+    padding:5px;
     text-transform:capitalize;
     border-radius:3px;
-    font-size:1.3em;
+    font-family:"Source Sans Pro";
+    font-size:1em;
 }
 
 .error #input-search input[type="text"]:focus
