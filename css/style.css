@@ -15,7 +15,7 @@
     width:16em;
     margin-left:10px;
     background-color:#eedddd;
-    font-family:"Franklin Gothic Medium";
+    font-family:"Arial Narrow";
     padding:1em;
     display:none;
 }
@@ -47,6 +47,7 @@
     height:1.5em;
     line-height:1.5em;
     text-align:center;
+    font-weight:bold;
 }
 
 #loading
@@ -100,4 +101,60 @@
     font-size:20px;
     line-height:3em;
     width:100%;
+}
+
+.error
+{
+    position:absolute;
+    z-index:1000;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    background-color:inherit;
+    display:none;
+}
+
+.error #text
+{
+    text-align:center;
+    display:block;
+    position:relative;
+    margin:auto;
+    height:2em;
+    width:100%;
+    line-height:2em;
+    top:6em;
+    font-size:1em;
+    font-weight:bold;
+    text-transform:uppercase;
+    font-family:"Arial Narrow":
+}
+
+.error #input-search
+{
+    position:relative;
+    height:3em;
+    top:8em;
+    width:100%;
+    display:block;
+    text-align:center;
+}
+
+.error #input-search input[type="text"]
+{
+    -webkit-appearance:none;
+    border:1px solid #f0f0f0;
+    height:1.5em;
+    width:75%;
+    font-family:"Arial Narrow";
+    padding-left:5px;
+    text-transform:capitalize;
+    border-radius:3px;
+    font-size:1.3em;
+}
+
+.error #input-search input[type="text"]:focus
+{
+    outline:none;
 }
