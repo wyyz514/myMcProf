@@ -174,12 +174,14 @@ app.profDetails = (function(){
     function toggleLoad()
     {
         var toggle = "off";
+        var container = document.querySelector(".container");
         var card = document.querySelector(".card");
         var load = document.querySelector("#loading");
         if(load.style.display.trim() == "none" || load.style.display == "")
         {
             toggle = "on";
             console.log("Loading is now on");
+            container.style.display = "block";
             card.style.display = "block";
             load.style.display = "block";
             return;
@@ -193,13 +195,23 @@ app.profDetails = (function(){
         }
     }
     
+    function addRatings(ratings)
+    {
+        document.getElementById("overall_quality").innerHTML = ratings["Overall_Quality"];
+        document.getElementById("avg-grade").innerHTML = ratings["Average_Grade"];
+        document.getElementById("clarity").innerHTML = ratings["Clarity"];
+        document.getElementById("helpf").innerHTML = ratings["Helpfulness"];
+        document.getElementById("easiness").innerHTML = ratings["Easiness"];
+    }
+    
     function addCard()
     {
         
     }
     
     return {
-        toggleLoad:toggleLoad
+        toggleLoad:toggleLoad,
+        addRatings:addRatings
     };
     
 })();
