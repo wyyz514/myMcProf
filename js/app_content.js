@@ -86,6 +86,8 @@ var content = (function(){
             //Todo add type key for error or details
             if(typeof ratings === "object")
             {
+                document.getElementById("prof-name").innerHTML = ratings["name"];
+                document.getElementById("prof-title").innerHTML = ratings["profTitle"];
                 document.getElementById("overall_quality").innerHTML = ratings["Overall_Quality"];
                 document.getElementById("avg-grade").innerHTML = ratings["Average_Grade"];
                 document.getElementById("clarity").innerHTML = ratings["Clarity"];
