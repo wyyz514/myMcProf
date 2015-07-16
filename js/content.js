@@ -8,7 +8,7 @@ content.makeProfNamesClickable();
 
 app.makeRequest(chrome.extension.getURL("../templates/card.html")).then(function(response){
     var divContainer = document.createElement("div");
-    divContainer.classList.add("container");
+    divContainer.classList.add("mcprof-container");
     divContainer.innerHTML = response;
     document.body.appendChild(divContainer);
     
