@@ -61,7 +61,7 @@ var content = (function(){
         {
             this.clearError();
             var toggle = "off";
-            var container = document.querySelector(".container");
+            var container = document.querySelector(".mcprof-container");
             var card = document.querySelector(".card");
             var load = document.querySelector("#loading");
             if(load.style.display.trim() == "none" || load.style.display == "")
