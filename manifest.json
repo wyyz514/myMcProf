@@ -5,7 +5,8 @@
     "version":"0.0.1",
     "page_action":{
         "default_icon":"img/logo.png",
-        "default_title":"RMP-McGill"
+        "default_title":"RMP-McGill",
+        "default_popup":"templates/popup.html"
     },
     "permissions":["tabs","http://*.mcgill.ca/*","https://*.mcgill.ca/*","*://www.ratemyprofessors.com/*"],
     "background":{
