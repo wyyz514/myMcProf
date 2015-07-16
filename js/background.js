@@ -7,7 +7,6 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 });
 
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    //put request in a function that returns response
     var query = msg.query;
     var queryType = msg.type;
     var url = background.baseURL+query;
