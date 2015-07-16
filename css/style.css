@@ -25,6 +25,7 @@
 
 #mcprof-header-bar
 {
+    position:relative;
     height:40px;
     width:100%;
     background-color:#CC2821;
@@ -39,7 +40,7 @@
     text-align:center;
     font-family:"Source Sans Pro";
     color:#fff;
-    font-size:16px;
+    font-size:14px;
     line-height:40px;
 }
 
@@ -190,20 +191,20 @@
     display:none;
 }
 
-.mcprof-error #text
+.mcprof-error #mcprof-text
 {
     text-align:center;
     display:block;
     position:relative;
     margin:auto;
+    padding-top:10px;
     height:50px;
     width:100%;
-    line-height:50px;
     font-size:14px;
     font-weight:bold;
 }
 
-.mcprof-error #input-search
+.mcprof-error #mcprof-input-search
 {
     position:relative;
     height:50px;
@@ -213,7 +214,7 @@
     line-height:50px;
 }
 
-.mcprof-error #input-search input[type="text"]
+.mcprof-error #mcprof-input-search input[type="text"]
 {
     -webkit-appearance:none;
     border:1px solid #cecece;
@@ -227,7 +228,7 @@
     -webkit-transition:all 0.5s ease-in-out;
 }
 
-.mcprof-error #input-search input[type="text"]:focus
+.mcprof-error #mcprof-input-search input[type="text"]:focus
 {
     outline:none;
     box-shadow:0 0 1px 1px #F78181;
@@ -239,6 +240,22 @@
     height:1px;
     margin:auto;
     background-color:#CC2821;
+}
+
+#mcprof-close
+{
+    position:absolute;
+    right:5px;
+    z-index:1002;
+    -webkit-box-sizing:border-box;
+    padding:3px;
+    color:#fff;
+    font-size:8px;
+    font-family:"Source Sans Pro";
+    text-transform:uppercase;
+    text-align:center;
+    letter-spacing:2px;
+    cursor:pointer;
 }
 
 .mcprof-hint
