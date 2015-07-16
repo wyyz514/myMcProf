@@ -1,11 +1,11 @@
 {
-    "name":"RMP-McGill",
-    "description":"Chrome extension for comparing McGill professors. Data are gotten from http://www.ratemyprofessor.com",
+    "name":"myMcProf",
+    "description":"Chrome extension that makes it easier to search McGill professors' ratings. Data gotten from http://www.ratemyprofessors.com",
     "manifest_version":2,
     "version":"0.0.1",
     "page_action":{
         "default_icon":"img/logo.png",
-        "default_title":"RMP-McGill",
+        "default_title":"myMcProf",
         "default_popup":"templates/popup.html"
     },
     "permissions":["tabs","http://*.mcgill.ca/*","https://*.mcgill.ca/*","*://www.ratemyprofessors.com/*"],

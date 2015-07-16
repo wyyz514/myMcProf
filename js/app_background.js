@@ -7,6 +7,24 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 //  <p>This will be found --> </p>
 //</div>
 //<p>What you might want --> </p>
+    function capitalizeName(name)
+    {
+        var chunks = name.split(" ");
+        for(var index = 0; index < chunks.length; index++)
+        {
+            chunks[index]  = chunks[index].charAt(0).toUpperCase() + chunks[index].slice(1);
+        }
+        var capitalizedName = chunks.join(" ");
+        
+        //hypen in name
+        if(capitalizedName.indexOf("-") > 0)
+        {
+            var index = capitalizedName.indexOf("-");
+            capitalizedName = capitalizedName.replace(capitalizedName[index + 1],capitalizedName[index + 1].toUpperCase());
+        }
+        return capitalizedName;
+    }
+    
     function findInPage(response,query,queryType,searchTerm,searchEndTerm)
     {
         //making assumption that class and id attributes on searchTerm,searchEndTerm remain consistent on http://www.ratemyprofessors.com
@@ -14,7 +32,7 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
         var resultIndex = response.search(searchTerm); 
         if(resultIndex < 0)
         {
-            sendMessage(query+" could not be found");
+            sendMessage(capitalizeName(query)+" could not be found");
             return;
         }
         var result = response.slice(resultIndex);

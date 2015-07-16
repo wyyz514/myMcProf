@@ -42,12 +42,12 @@ var content = (function(){
             message.type = "PROF";
             callback(message);
         }
-        
+        //if more than 3 chunks then what?
     }
 
+    //when message is sent to the background script, show the loading screen
     function sendMessage(message)
     {
-        console.log("Sending message");
         content.profDetails.toggleLoad();
         chrome.runtime.sendMessage({query:message.query,
                                     type:message.type},function(response){
@@ -62,8 +62,8 @@ var content = (function(){
             this.clearError();
             var toggle = "off";
             var container = document.querySelector(".mcprof-container");
-            var card = document.querySelector(".card");
-            var load = document.querySelector("#loading");
+            var card = document.querySelector(".mcprof-card");
+            var load = document.querySelector("#mcprof-loading");
             if(load.style.display.trim() == "none" || load.style.display == "")
             {
                 toggle = "on";
@@ -88,11 +88,11 @@ var content = (function(){
             {
                 document.getElementById("prof-name").innerHTML = ratings["name"];
                 document.getElementById("prof-title").innerHTML = ratings["profTitle"];
-                document.getElementById("overall_quality").innerHTML = ratings["Overall_Quality"];
-                document.getElementById("avg-grade").innerHTML = ratings["Average_Grade"];
-                document.getElementById("clarity").innerHTML = ratings["Clarity"];
-                document.getElementById("helpf").innerHTML = ratings["Helpfulness"];
-                document.getElementById("easiness").innerHTML = ratings["Easiness"];
+                document.getElementById("mcprof-overall_quality").innerHTML = ratings["Overall_Quality"];
+                document.getElementById("mcprof-avg-grade").innerHTML = ratings["Average_Grade"];
+                document.getElementById("mcprof-clarity").innerHTML = ratings["Clarity"];
+                document.getElementById("mcprof-helpf").innerHTML = ratings["Helpfulness"];
+                document.getElementById("mcprof-easiness").innerHTML = ratings["Easiness"];
             }
 
             //there is an error. Prof not found
@@ -103,12 +103,12 @@ var content = (function(){
         },
         showError:function(error)
         {
-            document.querySelector(".error").style.display = "block";
+            document.querySelector(".mcprof-error").style.display = "block";
             document.querySelector("#text").innerText = error;
         },
         clearError:function()
         {
-            document.querySelector(".error").style.display = "none";
+            document.querySelector(".mcprof-error").style.display = "none";
             document.querySelector("#text").innerText = "";
         }
     }

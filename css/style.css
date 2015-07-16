@@ -23,7 +23,7 @@
     width:100%;
 }
 
-#header-bar
+#mcprof-header-bar
 {
     height:3em;
     width:100%;
@@ -32,7 +32,7 @@
     font-family:"Source Sans Pro";
 }
 
-#header-bar #title
+#mcprof-header-bar #mcprof-title
 {
     width:100%;
     height:100%;
@@ -43,14 +43,14 @@
     line-height:3em;
 }
 
-#ratings-container
+#mcprof-ratings-container
 {
     height:14em;
     width:100%;
     background-color:#fff;
 }
 
-.card
+.mcprof-card
 {
     position:relative;
     height:100%;
@@ -93,28 +93,28 @@
     letter-spacing:2px;
 }
 
-.row
+.mcprof-row
 {
     width:100%;
     height:4em;
     color:#DF0101;
 }
 
-.col-50
+.mcprof-col-50
 {
     float:left;
     width:50%;
     height:100%;
 }
 
-.col-33
+.mcprof-col-33
 {
     float:left;
     width:33%;
     height:100%;
 }
 
-.rating
+.mcprof-rating
 {
     width:100%;
     height:1.5em;
@@ -124,7 +124,7 @@
     font-weight:bold;
 }
 
-#loading
+#mcprof-loading
 {
     position:absolute;
     height:100%;
@@ -135,7 +135,7 @@
     display:none;
 }
 
-#logo-container
+#mcprof-logo-container
 {
     position:relative;
     height:30px;
@@ -144,7 +144,7 @@
     top:5em;
 }
 
-#logo
+#mcprof-logo
 {
     height:100%;
     width:100%;
@@ -168,7 +168,7 @@
     }
 }
 
-.score
+.mcprof-score
 {
     height:3em;
     text-align:center;
@@ -178,7 +178,7 @@
     font-weight:bold;
 }
 
-.error
+.mcprof-error
 {
     position:absolute;
     z-index:1000;
@@ -190,7 +190,7 @@
     display:none;
 }
 
-.error #text
+.mcprof-error #text
 {
     text-align:center;
     display:block;
@@ -204,7 +204,7 @@
     font-weight:bold;
 }
 
-.error #input-search
+.mcprof-error #input-search
 {
     position:relative;
     height:3em;
@@ -214,7 +214,7 @@
     text-align:center;
 }
 
-.error #input-search input[type="text"]
+.mcprof-error #input-search input[type="text"]
 {
     -webkit-appearance:none;
     border:1px solid #cecece;
@@ -228,7 +228,7 @@
     -webkit-transition:all 0.5s ease-in-out;
 }
 
-.error #input-search input[type="text"]:focus
+.mcprof-error #input-search input[type="text"]:focus
 {
     outline:none;
     box-shadow:0 0 3px 1px #F78181;
