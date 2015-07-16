@@ -52,13 +52,17 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
             }
     }
     
+    //Will parse the chunk of html data appended to the background page and will extract the ratings we want
+    //and then send the results to the content script.
     function getProfInfo()
     {
         var message = {};
         var profOverall = document.querySelectorAll("div.left-breakdown div.breakdown-header");
         var profRatings = document.querySelectorAll("div.left-breakdown div.faux-slides div.rating-slider");
-        var _profOverall = Array.prototype.slice.call(profOverall);
+        var _profOverall = Array.prototype.slice.call(profOverall); //making the returned object iterable
         var _profRatings = Array.prototype.slice.call(profRatings);
+        
+        //begin extraction
         for(var index = 0; index < _profOverall.length; index++)
         {
             (function(i){
