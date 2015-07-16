@@ -9,8 +9,9 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 //<p>What you might want --> </p>
     function findInPage(response,query,queryType,searchTerm,searchEndTerm)
     {
-        console.log("Looking for "+searchTerm+" in page"+":"+queryType);
-        var resultIndex = response.search(searchTerm);
+        //making assumption that class and id attributes on searchTerm,searchEndTerm remain consistent on http://www.ratemyprofessors.com
+        //if no element exists with a signature similar to searchTerm then we know the                                                          //results are not what we want
+        var resultIndex = response.search(searchTerm); 
         if(resultIndex < 0)
         {
             sendMessage(query+" could not be found");
@@ -31,7 +32,7 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
         }
         else if(queryType == "RATINGS")
         {
-            getProfInfo();
+            getProfInfo(query);
         }
     }
 
@@ -44,7 +45,7 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
                 break;
 
                 case "RATINGS":
-                    findInPage(response,query,queryType,'<div class="left-breakdown">','<div class="right-breakdown">');
+                    findInPage(response,query,queryType,'<div class="right-panel">','<script type="text/template" id="noteTemplate">');
                 break;
 
                 default:
@@ -54,9 +55,13 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
     
     //Will parse the chunk of html data appended to the background page and will extract the ratings we want
     //and then send the results to the content script.
-    function getProfInfo()
+    function getProfInfo(query)
     {
         var message = {};
+        var profTitle = document.querySelector("div.result-title").innerText.split(" at ")[0]; //remove at McGill Univesity...
+        profTitle = profTitle.replace("in the","of");
+        var departmentIndex = profTitle.search("department");
+        profTitle = profTitle.slice(0,departmentIndex);
         var profOverall = document.querySelectorAll("div.left-breakdown div.breakdown-header");
         var profRatings = document.querySelectorAll("div.left-breakdown div.faux-slides div.rating-slider");
         var _profOverall = Array.prototype.slice.call(profOverall); //making the returned object iterable
@@ -80,12 +85,14 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
                 message[tempArr[0]] = tempArr[1];
             })(index);
         }
+        
+        message.name = query;
+        message.profTitle = profTitle;
         sendMessage(message);
     }
 
     function sendMessage(message)
     {
-        console.log(message);
         chrome.tabs.query({active:true,currentWindow:true},function(tabs){
             chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){
                 //don't have to do anything
