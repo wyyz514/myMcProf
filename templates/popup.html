@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="../js/popup.js"></script>
+    </head>
+    <body>
+        <div id="mcprof-quick-search">
+            <div id="mcprof-popup-header">
+                myMcProf
+            </div>
+            <div id="mcprof-popup-field">
+                <input type="text" placeholder="Search for a professor" id="popup-field">
+            </div>
+            <div id="for-the-lost"><sup>*</sup>Hit enter or return to search</div>
+        </div>
+    </body>
+    <style>
+        @font-face
+        {
+            src:url("../fonts/SourceSansPro-Regular.otf");
+            font-family:"Source Sans Pro";
+        }
+        
+        body
+        {
+            margin:0;
+        }
+        
+        #mcprof-quick-search
+        {
+            width:20em;
+            height:9em;
+        }
+
+        #mcprof-popup-header
+        {
+            border-top-left-radius:5px;
+            border-top-right-radius:5px;
+            width:100%;
+            height:2em;
+            font-size:1.2em;
+            text-align:center;
+            background-color:#CC2821;
+            color:#fff;
+            font-family:"Source Sans Pro";
+            line-height:2em;
+        }
+        
+        #mcprof-popup-field
+        {
+            width:100%;
+            height:5em;
+            line-height:5em;
+            text-align:center;
+        }
+        
+        #mcprof-popup-field #popup-field
+        {
+            -webkit-appearance:none;
+            border:1px solid #cecece;
+            border-radius:3px;
+            height:1.3em;
+            padding:5px;
+            font-family:"Source Sans Pro";
+            margin:auto;
+            width:85%;
+            -webkit-transition:all 0.5s ease-in-out;
+            text-transform:capitalize;
+        }
+        
+        #mcprof-popup-field #popup-field:focus
+        {
+            outline:none;
+            box-shadow:0 0 3px 1px #F78181;
+        }
+        
+        #for-the-lost
+        {
+            width:100%;
+            height:2em;
+            font-family:"Source Sans Pro";
+            font-size:10px;
+            text-transform:uppercase;
+            text-align:center;
+            font-weight:bold;
+            color:#CC2821;
+        }
+    </style>
+</html>
