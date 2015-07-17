@@ -48,6 +48,7 @@ var content = (function(){
     //when message is sent to the background script, show the loading screen
     function sendMessage(message)
     {
+        //show load
         content.profDetails.toggleLoad();
         chrome.runtime.sendMessage({query:message.query,
                                     type:message.type},function(response){
@@ -81,8 +82,9 @@ var content = (function(){
         },
         addRatings:function(ratings)
         {
+            console.log(ratings);
             //Todo add type key for error or details
-            if(typeof ratings === "object")
+            if(typeof ratings === "object" && !ratings.hasOwnProperty("type"))
             {
                 document.getElementById("prof-name").innerHTML = ratings["name"];
                 document.getElementById("prof-title").innerHTML = ratings["profTitle"];
