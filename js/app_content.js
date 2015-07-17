@@ -82,7 +82,6 @@ var content = (function(){
         },
         addRatings:function(ratings)
         {
-            console.log(ratings);
             //Todo add type key for error or details
             if(typeof ratings === "object" && !ratings.hasOwnProperty("type"))
             {
@@ -118,7 +117,7 @@ var content = (function(){
         profDetails:profDetails,
         makeProfNamesClickable:makeProfNamesClickable,
         findProfessor:findProfessor,
-        sendMessage:sendMessage
+        sendMessage:sendMessage,
     };
     
 })();
