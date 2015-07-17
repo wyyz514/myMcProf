@@ -1,14 +1,21 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-   
     if(msg.type == "POPUP")
     {
         content.sendMessage({type:"PROF",query:msg.query});
         return;
     }
     
+    if(msg.type == "NOT_FOUND")
+    {
+        content.profDetails.toggleLoad();
+        content.profDetails.showError(msg.error);
+        return;
+    }
+    
     if(msg.type == "NO_RATINGS")
     {
         content.profDetails.toggleLoad();
+        content.profDetails.showError(msg.error);
         return;
     }
     
@@ -17,7 +24,7 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
         //hide load
         content.profDetails.toggleLoad();
         //show ratings
-        content.profDetails.addRatings(msg.message);
+        content.profDetails.addRatings(msg);
         return;
     }
     return true;
