@@ -76,6 +76,13 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
     function getProfInfo(query)
     {
         var message = {};
+        //meaning professor exists but has no ratings
+        if(!document.querySelector("div.result-title"))
+        {
+            sendMessage({type:"NO_RATINGS"});
+            return;
+        }
+        
         var profTitle = document.querySelector("div.result-title").innerText.split(" at ")[0]; //remove at McGill Univesity...
         profTitle = profTitle.replace("in the","of");
         var departmentIndex = profTitle.search("department");
