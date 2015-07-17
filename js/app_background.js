@@ -7,50 +7,42 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
 //  <p>This will be found --> </p>
 //</div>
 //<p>What you might want --> </p>
-    function capitalizeName(name)
-    {
-        var chunks = name.split(" ");
-        for(var index = 0; index < chunks.length; index++)
-        {
-            chunks[index]  = chunks[index].charAt(0).toUpperCase() + chunks[index].slice(1);
-        }
-        var capitalizedName = chunks.join(" ");
-        
-        //hypen in name
-        if(capitalizedName.indexOf("-") > 0)
-        {
-            var index = capitalizedName.indexOf("-");
-            capitalizedName = capitalizedName.replace(capitalizedName[index + 1],capitalizedName[index + 1].toUpperCase());
-        }
-        return capitalizedName;
-    }
+    
     
     function findInPage(response,query,queryType,searchTerm,searchEndTerm)
     {
         //making assumption that class and id attributes on searchTerm,searchEndTerm remain consistent on http://www.ratemyprofessors.com
         //if no element exists with a signature similar to searchTerm then we know the                                                          //results are not what we want
         var resultIndex = response.search(searchTerm); 
-        if(resultIndex < 0)
+        if(resultIndex < 0 && queryType == "PROF")
         {
-            sendMessage(capitalizeName(query)+" could not be found");
+            sendMessage({error:app.capitalize(query)+" could not be found",type:"NOT_FOUND"});
             return;
         }
-        var result = response.slice(resultIndex);
-        var resultEndIndex = result.search(searchEndTerm);
-        console.log(resultEndIndex);
-        result = result.slice(0,resultEndIndex); 
-        document.querySelector("#rmp").innerHTML = result;
-        if(queryType == "PROF")
+        else
         {
-            var link = document.querySelector("li a").getAttribute("href");
-            console.log(link);
-            app.makeRequest("http://www.ratemyprofessors.com"+link).then(function(data){
-                performAction(data,query,"RATINGS");
-            });
-        }
-        else if(queryType == "RATINGS")
-        {
-            getProfInfo(query);
+            var result = response.slice(resultIndex);
+            var resultEndIndex = result.search(searchEndTerm);
+            result = result.slice(0,resultEndIndex); 
+            document.querySelector("#rmp").innerHTML = result;
+            //if a prof has not been rated, the html still contains a div with class attr. 'right-panel' but 
+            //lacks the searchEndTerm
+            if(resultEndIndex < 0 && queryType == "RATINGS")
+            {
+                sendMessage({error:app.capitalize(query)+" has not been rated",type:"NO_RATINGS"});
+                return;
+            }
+            if(queryType == "PROF" && resultEndIndex > 0)
+            {
+                var link = document.querySelector("li a").getAttribute("href");
+                app.makeRequest("http://www.ratemyprofessors.com"+link).then(function(data){
+                    performAction(data,query,"RATINGS");
+                });
+            }
+            else if(queryType == "RATINGS" && resultEndIndex > 0)
+            {
+                getProfInfo(query);
+            }
         }
     }
 
@@ -76,13 +68,6 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
     function getProfInfo(query)
     {
         var message = {};
-        //meaning professor exists but has no ratings
-        if(!document.querySelector("div.result-title"))
-        {
-            sendMessage({type:"NO_RATINGS"});
-            return;
-        }
-        
         var profTitle = document.querySelector("div.result-title").innerText.split(" at ")[0]; //remove at McGill Univesity...
         profTitle = profTitle.replace("in the","of");
         var departmentIndex = profTitle.search("department");
@@ -119,7 +104,7 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
     function sendMessage(message)
     {
         chrome.tabs.query({active:true,currentWindow:true},function(tabs){
-            chrome.tabs.sendMessage(tabs[0].id,{message:message},function(response){
+            chrome.tabs.sendMessage(tabs[0].id,message,function(response){
                 //don't have to do anything
             });
         });
