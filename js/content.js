@@ -1,12 +1,24 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
+   
     if(msg.type == "POPUP")
     {
         content.sendMessage({type:"PROF",query:msg.query});
+        return;
     }
-    else
+    
+    if(msg.type == "NO_RATINGS")
     {
         content.profDetails.toggleLoad();
+        return;
+    }
+    
+    else
+    {
+        //hide load
+        content.profDetails.toggleLoad();
+        //show ratings
         content.profDetails.addRatings(msg.message);
+        return;
     }
     return true;
 });
