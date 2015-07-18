@@ -197,7 +197,8 @@
     display:block;
     position:relative;
     margin:auto;
-    padding-top:10px;
+    -webkit-box-sizing:border-box;
+    padding:15px 5px 0 5px;
     height:50px;
     width:100%;
     font-size:14px;
@@ -269,5 +270,5 @@
     font-family:"Source Sans Pro";
     font-size:10px;
     -webkit-box-sizing:border-box;
-    padding:3px;
+    padding:8px;
 }
