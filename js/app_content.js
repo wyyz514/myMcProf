@@ -51,7 +51,8 @@ var content = (function(){
         //show load
         content.profDetails.toggleLoad();
         chrome.runtime.sendMessage({query:message.query,
-                                    type:message.type},function(response){
+                                    type:message.type,
+                                    action:message.action},function(response){
             //console.log(response.message);
         });
     }
@@ -83,7 +84,7 @@ var content = (function(){
         addRatings:function(ratings)
         {
             //Todo add type key for error or details
-            if(typeof ratings === "object" && !ratings.hasOwnProperty("type"))
+            if(typeof ratings === "object" && ratings.type == "RESULTS")
             {
                 document.getElementById("prof-name").innerHTML = ratings["name"];
                 document.getElementById("prof-title").innerHTML = ratings["profTitle"];
@@ -95,9 +96,9 @@ var content = (function(){
             }
 
             //there is an error. Prof not found
-            if(typeof ratings === "string")
+            if(typeof ratings === "object" && ratings.hasOwnProperty("error"))
             {
-                this.showError(ratings);
+                this.showError(ratings.error);
             }
         },
         showError:function(error)
@@ -117,7 +118,7 @@ var content = (function(){
         profDetails:profDetails,
         makeProfNamesClickable:makeProfNamesClickable,
         findProfessor:findProfessor,
-        sendMessage:sendMessage,
+        sendMessage:sendMessage
     };
     
 })();

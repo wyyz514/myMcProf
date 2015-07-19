@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     if(msg.type == "POPUP" && msg.action == "SEARCH")
     {
         content.sendMessage({type:"PROF",query:msg.query,action:msg.action});
-        senderResp("ENABLE_COMP");
+        senderResp("ENABLE_BUTTON");
         return;
     }
     
@@ -23,8 +23,13 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     if(msg.type == "NO_RATINGS")
     {
         content.profDetails.toggleLoad();
-        content.profDetails.showError(msg.error);
+        content.profDetails.showError(msg);
         return;
+    }
+    
+    if(msg.type == "RESULTS" && msg.action == "COMPARE")
+    {
+        console.log("Need to add card and add ratings to said card");
     }
     
     else

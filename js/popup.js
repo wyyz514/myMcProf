@@ -3,16 +3,27 @@ document.addEventListener("DOMContentLoaded",function(){
     var field = document.getElementById("popup-field");
     field.focus();
     var searchButton = document.getElementById("popup-search");
+    var compareButton = document.getElementById("popup-compare");
+    
     searchButton.addEventListener("click",function(){
         var fieldValue = field.value.trim();
-        if(fieldValue && regex.test(fieldValue))
+        popupButtonsHandler("SEARCH",fieldValue,regex);
+    });
+    compareButton.addEventListener("click",function(){
+        var fieldValue = field.value.trim();
+        popupButtonsHandler("SEARCH",fieldValue,regex);
+    });
+});
+
+var popupButtonsHandler = function(action,fieldValue,regex)
+{
+    if(fieldValue && regex.test(fieldValue))
         {
             console.log(regex.exec(fieldValue));
             chrome.tabs.query({active:true,currentWindow:true},function(tabs){
-                chrome.tabs.sendMessage(tabs[0].id,{query:fieldValue,type:"POPUP",action:"SEARCH"},function(response){
-                    console.log(response);
+                chrome.tabs.sendMessage(tabs[0].id,{query:fieldValue,type:"POPUP",action:action},function(response){
+                  
                 });
             });
         }
-    });
-});
+}
