@@ -11,7 +11,14 @@
             <div id="mcprof-popup-field">
                 <input type="text" placeholder="Search for a professor" id="popup-field">
             </div>
-            <div id="for-the-lost"><sup>&#8226;</sup>Hit enter or return to search</div>
+            <div id="mcprof-popup-buttons">
+                <div class="popup-button">
+                    <div id="popup-search">Search</div>
+                </div>
+                <div class="popup-button">
+                    <div id="popup-compare">Compare</div>
+                </div>
+            </div>
         </div>
     </body>
     <style>
@@ -74,16 +81,36 @@
             box-shadow:0 0 1px 1px #F78181;
         }
         
-        #for-the-lost
+        #mcprof-popup-buttons
         {
-            width:100%;
-            height:2em;
-            font-family:"Source Sans Pro";
-            font-size:10px;
-            text-transform:uppercase;
-            text-align:center;
-            font-weight:bold;
-            color:#CC2821;
+            width:65%;
+            margin:auto;
+            height:3em;
         }
+        
+        #mcprof-popup-buttons .popup-button
+        {
+            height:100%;
+            width:50%;
+            float:left;
+        }
+        
+        #mcprof-popup-buttons .popup-button>div
+        {
+            margin:auto;
+            -webkit-box-sizing:border-box;
+            font-weight:bold;
+            height:2.5em;
+            line-height:2.5em;
+            width:85%;
+            color:#fff;
+            border-radius:3px;
+            font-size:11px;
+            background-color:#CC2821;
+            font-family:"Source Sans Pro";
+            text-align:center;
+            cursor:pointer;
+        }
+        
     </style>
 </html>
