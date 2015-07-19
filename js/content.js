@@ -1,7 +1,15 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    if(msg.type == "POPUP")
+    console.log(msg);
+    if(msg.type == "POPUP" && msg.action == "SEARCH")
     {
-        content.sendMessage({type:"PROF",query:msg.query});
+        content.sendMessage({type:"PROF",query:msg.query,action:msg.action});
+        senderResp("ENABLE_COMP");
+        return;
+    }
+    
+    if(msg.type == "POPUP" && msg.action == "COMPARE")
+    {
+        content.sendMessage({type:"PROF",query:msg.query,action:msg.action});
         return;
     }
     
@@ -61,4 +69,3 @@ app.makeRequest(chrome.extension.getURL("../templates/card.html")).then(function
 
 });
 
-app.contentContext = this;
