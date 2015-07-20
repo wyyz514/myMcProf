@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded",function(){
     });
     compareButton.addEventListener("click",function(){
         var fieldValue = field.value.trim();
-        popupButtonsHandler("SEARCH",fieldValue,regex);
+        popupButtonsHandler("COMPARE",fieldValue,regex);
     });
 });
 
