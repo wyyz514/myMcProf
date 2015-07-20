@@ -2,42 +2,41 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     console.log(msg);
     if(msg.type == "POPUP" && msg.action == "SEARCH")
     {
-        content.sendMessage({type:"PROF",query:msg.query,action:msg.action});
-        senderResp("ENABLE_BUTTON");
+        content.findProfessor(msg.query,msg.action,content.sendMessage);
         return;
     }
     
     if(msg.type == "POPUP" && msg.action == "COMPARE")
     {
-        content.sendMessage({type:"PROF",query:msg.query,action:msg.action});
+        if(!document.getElementById("compare"))
+            content.addCard("compare").then(function(){
+                content.findProfessor(msg.query,msg.action,content.sendMessage);
+            });
+        else
+            content.findProfessor(msg.query,msg.action,content.sendMessage);
         return;
     }
     
     if(msg.type == "NOT_FOUND")
     {
-        content.profDetails.toggleLoad();
-        content.profDetails.showError(msg.error);
+        content.profDetails.toggleLoad(msg.action);
+        content.profDetails.showError(msg.error,msg.action);
         return;
     }
     
     if(msg.type == "NO_RATINGS")
     {
-        content.profDetails.toggleLoad();
-        content.profDetails.showError(msg);
+        content.profDetails.toggleLoad(msg.action);
+        content.profDetails.showError(msg,msg.action);
         return;
-    }
-    
-    if(msg.type == "RESULTS" && msg.action == "COMPARE")
-    {
-        console.log("Need to add card and add ratings to said card");
     }
     
     else
     {
         //hide load
-        content.profDetails.toggleLoad();
+        content.profDetails.toggleLoad(msg.action);
         //show ratings
-        content.profDetails.addRatings(msg);
+        content.profDetails.addRatings(msg,msg.action);
         return;
     }
     return true;
@@ -46,31 +45,4 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
 content.makeProfNamesClickable();
 
 //inject GUI into page
-app.makeRequest(chrome.extension.getURL("../templates/card.html")).then(function(response){
-    var divContainer = document.createElement("div");
-    divContainer.classList.add("mcprof-container");
-    divContainer.innerHTML = response;
-    document.body.appendChild(divContainer);
-    
-    //search handler for error page search
-    document.querySelector("#mcprof-search").addEventListener("keydown",function(e){
-        var el = e.target;
-        console.log(e.keyCode);
-        if(e.keyCode == 13)
-        {
-            content.sendMessage({
-                type:"PROF",
-                query:el.value
-            });
-        }
-    });
-    
-    //close handler
-    var closeButton = document.querySelector("#mcprof-close");
-    closeButton.addEventListener("click",function(){
-    var mymcProf = document.querySelector(".mcprof-container");
-    mymcProf.style.display = "none";
-});
-
-});
-
+content.addCard("search");
