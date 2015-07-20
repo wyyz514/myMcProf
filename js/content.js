@@ -1,15 +1,15 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
     console.log(msg);
-    if(msg.type == "POPUP" && msg.action == "SEARCH")
+    if(msg.type == "POPUP" && msg.action == "MCPROF_SEARCH")
     {
         content.findProfessor(msg.query,msg.action,content.sendMessage);
         return;
     }
     
-    if(msg.type == "POPUP" && msg.action == "COMPARE")
+    if(msg.type == "POPUP" && msg.action == "MCPROF_COMPARE")
     {
-        if(!document.getElementById("compare"))
-            content.addCard("compare").then(function(){
+        if(!document.getElementById("mcprof_compare"))
+            content.addCard("mcprof_compare").then(function(){
                 content.findProfessor(msg.query,msg.action,content.sendMessage);
             });
         else
@@ -45,4 +45,4 @@ chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
 content.makeProfNamesClickable();
 
 //inject GUI into page
-content.addCard("search");
+content.addCard("mcprof_search");
