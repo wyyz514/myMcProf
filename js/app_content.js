@@ -13,7 +13,7 @@ var content = (function(){
                     if(regex.exec(name) && 
                        name !== "TBA" && 
                        name.indexOf(".") != name.length - 1)
-                        findProfessor(e.target.innerText,"SEARCH",sendMessage);
+                        findProfessor(e.target.innerText,"MCPROF_SEARCH",sendMessage);
                 });
             })(index);
         }
@@ -71,12 +71,12 @@ var content = (function(){
             var el = document.getElementById(_id+"");
             var toggle = "off";
             var container = "";
-            if(id.toLowerCase() == "search")
+            if(id.toLowerCase() == "mcprof_search")
                 container = document.querySelectorAll(".mcprof-container")[0];
             else
                 container = document.querySelectorAll(".mcprof-container")[1];
             var card = el.querySelector(".mcprof-card");
-            var load = el.querySelector("#mcprof-loading");
+            var load = el.querySelector(".mcprof-loading");
             if(load.style.display.trim() == "none" || load.style.display == "")
             {
                 toggle = "on";
@@ -98,8 +98,8 @@ var content = (function(){
             //Todo add type key for error or details
             if(typeof ratings === "object" && ratings.type == "RESULTS")
             {
-                el.querySelector("#prof-name").innerHTML = ratings["name"];
-                el.querySelector("#prof-title").innerHTML = ratings["profTitle"];
+                el.querySelector(".prof-name").innerHTML = ratings["name"];
+                el.querySelector(".prof-title").innerHTML = ratings["profTitle"];
                 el.querySelector("#mcprof-overall_quality").innerHTML = ratings["Overall_Quality"];
                 el.querySelector("#mcprof-avg-grade").innerHTML = ratings["Average_Grade"];
                 el.querySelector("#mcprof-clarity").innerHTML = ratings["Clarity"];
@@ -118,7 +118,7 @@ var content = (function(){
             var _id = id.toLowerCase();
             var el = document.getElementById(_id);
             var errorEl = el.querySelector(".mcprof-error");
-            var errorText = el.querySelector("#mcprof-text");
+            var errorText = el.querySelector(".mcprof-text");
             errorEl.style.display = "block";
             errorText.innerText = error;
         },
@@ -129,8 +129,8 @@ var content = (function(){
             var el = document.getElementById(_id);
             console.log(el);
             var errorEl = el.querySelector(".mcprof-error");
-            var errorText = el.querySelector("#mcprof-text");
-            var search = el.querySelector("#mcprof-search");
+            var errorText = el.querySelector(".mcprof-text");
+            var search = el.querySelector(".mcprof-search");
             errorEl.style.display = "none";
             errorText.innerText = "";
             search.value = "";
@@ -153,12 +153,12 @@ var content = (function(){
                     var divContainer = document.createElement("div");
                     divContainer.classList.add("mcprof-container");
                     divContainer.innerHTML = divContainer.innerHTML+response;
+                    divContainer.setAttribute("id",id);
                     document.body.appendChild(divContainer);
                     var card = divContainer.querySelector(".mcprof");
-                    card.setAttribute("id",id);
-                    console.log(card);
+                    console.log(divContainer);
                     //search handler for error page search
-                    card.querySelector("#mcprof-search").addEventListener("keyup",function(e){
+                    card.querySelector(".mcprof-search").addEventListener("keyup",function(e){
                         var el = e.target;
                         console.log(e.keyCode);
                         if(e.keyCode == 13)
@@ -171,12 +171,14 @@ var content = (function(){
                         }
                     });
                     //close handler
-                    var closeButton = card.querySelector("#mcprof-close");
+                    var closeButton = card.querySelector(".mcprof-close");
                     closeButton.addEventListener("click",function(){
                         var mymcProf = card.parentElement;
                         mymcProf.style.display = "none";
                     });
                 });
+                //when the page realizes it has the second card added, resolve the promise
+                //without the promise, the app will try to add the ratings to a card that doesn't exist
                 document.addEventListener("DOMSubtreeModified",function(e){
                     resolve();
                 });
