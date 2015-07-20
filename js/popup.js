@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded",function(){
     
     searchButton.addEventListener("click",function(){
         var fieldValue = field.value.trim();
-        popupButtonsHandler("SEARCH",fieldValue,regex);
+        popupButtonsHandler("MCPROF_SEARCH",fieldValue,regex);
     });
     compareButton.addEventListener("click",function(){
         var fieldValue = field.value.trim();
-        popupButtonsHandler("COMPARE",fieldValue,regex);
+        popupButtonsHandler("MCPROF_COMPARE",fieldValue,regex);
     });
 });
 
