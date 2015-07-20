@@ -4,19 +4,22 @@ var content = (function(){
     {
         var profRows = document.querySelectorAll("tr td.dddefault");
         var _profRows = Array.prototype.slice.call(profRows);
-        var regex = new RegExp(/^[a-z A-Z'-.]+$/);
+        var regex = new RegExp(/[a-z A-Z'-.]+$/);
         for(var index = 0; index < _profRows.length; index++)
         {
             (function(i){
                 _profRows[i].addEventListener("click",function(e){
-                    if(regex.exec(e.target.innerText) && e.target.innerText !== "TBA")
-                        findProfessor(e.target.innerText,sendMessage);
+                    var name = e.target.innerText;
+                    if(regex.exec(name) && 
+                       name !== "TBA" && 
+                       name.indexOf(".") != name.length - 1)
+                        findProfessor(e.target.innerText,"SEARCH",sendMessage);
                 });
             })(index);
         }
     }
 
-    function findProfessor(names,callback)
+    function findProfessor(names,action,callback)
     {
         var message = {};
         var _names = names.split(" ");
@@ -30,6 +33,7 @@ var content = (function(){
         {
             message.query = names;
             message.type = "PROF";
+            message.action = action;
             callback(message);
         }
         
@@ -40,6 +44,7 @@ var content = (function(){
             var fullName = _names[0] +" "+ _names[2];
             message.query = fullName;
             message.type = "PROF";
+            message.action = action;
             callback(message);
         }
         //if more than 3 chunks then what?
@@ -49,7 +54,7 @@ var content = (function(){
     function sendMessage(message)
     {
         //show load
-        content.profDetails.toggleLoad();
+        content.profDetails.toggleLoad(message.action);
         chrome.runtime.sendMessage({query:message.query,
                                     type:message.type,
                                     action:message.action},function(response){
@@ -59,13 +64,19 @@ var content = (function(){
     
     var profDetails = {
 
-        toggleLoad:function()
+        toggleLoad:function(id)
         {
-            this.clearError();
+            var _id = id.toLowerCase();
+            this.clearError(_id);
+            var el = document.getElementById(_id+"");
             var toggle = "off";
-            var container = document.querySelector(".mcprof-container");
-            var card = document.querySelector(".mcprof-card");
-            var load = document.querySelector("#mcprof-loading");
+            var container = "";
+            if(id.toLowerCase() == "search")
+                container = document.querySelectorAll(".mcprof-container")[0];
+            else
+                container = document.querySelectorAll(".mcprof-container")[1];
+            var card = el.querySelector(".mcprof-card");
+            var load = el.querySelector("#mcprof-loading");
             if(load.style.display.trim() == "none" || load.style.display == "")
             {
                 toggle = "on";
@@ -81,44 +92,105 @@ var content = (function(){
                 return;
             }
         },
-        addRatings:function(ratings)
+        addRatings:function(ratings,cardId)
         {
+            var el = document.getElementById(cardId.toLowerCase());
             //Todo add type key for error or details
             if(typeof ratings === "object" && ratings.type == "RESULTS")
             {
-                document.getElementById("prof-name").innerHTML = ratings["name"];
-                document.getElementById("prof-title").innerHTML = ratings["profTitle"];
-                document.getElementById("mcprof-overall_quality").innerHTML = ratings["Overall_Quality"];
-                document.getElementById("mcprof-avg-grade").innerHTML = ratings["Average_Grade"];
-                document.getElementById("mcprof-clarity").innerHTML = ratings["Clarity"];
-                document.getElementById("mcprof-helpf").innerHTML = ratings["Helpfulness"];
-                document.getElementById("mcprof-easiness").innerHTML = ratings["Easiness"];
+                el.querySelector("#prof-name").innerHTML = ratings["name"];
+                el.querySelector("#prof-title").innerHTML = ratings["profTitle"];
+                el.querySelector("#mcprof-overall_quality").innerHTML = ratings["Overall_Quality"];
+                el.querySelector("#mcprof-avg-grade").innerHTML = ratings["Average_Grade"];
+                el.querySelector("#mcprof-clarity").innerHTML = ratings["Clarity"];
+                el.querySelector("#mcprof-helpf").innerHTML = ratings["Helpfulness"];
+                el.querySelector("#mcprof-easiness").innerHTML = ratings["Easiness"];
             }
 
             //there is an error. Prof not found
             if(typeof ratings === "object" && ratings.hasOwnProperty("error"))
             {
-                this.showError(ratings.error);
+                this.showError(ratings.error,cardId.toLowerCase());
             }
         },
-        showError:function(error)
+        showError:function(error,id)
         {
-            document.querySelector(".mcprof-error").style.display = "block";
-            document.querySelector("#mcprof-text").innerText = error;
+            var _id = id.toLowerCase();
+            var el = document.getElementById(_id);
+            var errorEl = el.querySelector(".mcprof-error");
+            var errorText = el.querySelector("#mcprof-text");
+            errorEl.style.display = "block";
+            errorText.innerText = error;
         },
-        clearError:function()
+        clearError:function(id)
         {
-            document.querySelector(".mcprof-error").style.display = "none";
-            document.querySelector("#mcprof-text").innerText = "";
-            document.querySelector("#mcprof-search").value = "";
+            console.log("Clearing error");
+            var _id = id.toLowerCase();
+            var el = document.getElementById(_id);
+            console.log(el);
+            var errorEl = el.querySelector(".mcprof-error");
+            var errorText = el.querySelector("#mcprof-text");
+            var search = el.querySelector("#mcprof-search");
+            errorEl.style.display = "none";
+            errorText.innerText = "";
+            search.value = "";
         }
+    }
+    
+    function addCard(id)
+    {
+        var promise = new Promise(function(resolve,reject){
+            console.log("Adding card");
+            var el = document.getElementById(id);
+            if(el && el.classList.contains("mcprof"))
+            {
+                reject();
+                return;
+            }
+            else
+            {
+                app.makeRequest(chrome.extension.getURL("../templates/card.html")).then(function(response){
+                    var divContainer = document.createElement("div");
+                    divContainer.classList.add("mcprof-container");
+                    divContainer.innerHTML = divContainer.innerHTML+response;
+                    document.body.appendChild(divContainer);
+                    var card = divContainer.querySelector(".mcprof");
+                    card.setAttribute("id",id);
+                    console.log(card);
+                    //search handler for error page search
+                    card.querySelector("#mcprof-search").addEventListener("keyup",function(e){
+                        var el = e.target;
+                        console.log(e.keyCode);
+                        if(e.keyCode == 13)
+                        {
+                            content.sendMessage({
+                                type:"PROF",
+                                query:el.value,
+                                action:id.toUpperCase()
+                            });
+                        }
+                    });
+                    //close handler
+                    var closeButton = card.querySelector("#mcprof-close");
+                    closeButton.addEventListener("click",function(){
+                        var mymcProf = card.parentElement;
+                        mymcProf.style.display = "none";
+                    });
+                });
+                document.addEventListener("DOMSubtreeModified",function(e){
+                    resolve();
+                });
+            }
+        });
+        return promise;
     }
     
     return {
         profDetails:profDetails,
         makeProfNamesClickable:makeProfNamesClickable,
         findProfessor:findProfessor,
-        sendMessage:sendMessage
+        sendMessage:sendMessage,
+        addCard:addCard
     };
     
 })();
