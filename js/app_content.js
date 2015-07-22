@@ -15,7 +15,7 @@ var content = (function(){
                        name.indexOf(".") != name.length - 1)
                         findProfessor(name,"MCPROF_SEARCH",sendMessage);
                 });
-                
+            /*    
                 _profRows[i].addEventListener("contextmenu",function(e){
                     e.preventDefault();
                     var name = e.target.innerText;
@@ -26,6 +26,7 @@ var content = (function(){
                             findProfessor(name,"MCPROF_COMPARE",sendMessage);
                         });
                 });
+            */
             })(index);
         }
     }
