@@ -13,7 +13,18 @@ var content = (function(){
                     if(regex.exec(name) && 
                        name !== "TBA" && 
                        name.indexOf(".") != name.length - 1)
-                        findProfessor(e.target.innerText,"MCPROF_SEARCH",sendMessage);
+                        findProfessor(name,"MCPROF_SEARCH",sendMessage);
+                });
+                
+                _profRows[i].addEventListener("contextmenu",function(e){
+                    e.preventDefault();
+                    var name = e.target.innerText;
+                    if(regex.exec(name) && 
+                       name !== "TBA" && 
+                       name.indexOf(".") != name.length - 1)
+                        addCard("mcprof_compare").then(function(){
+                            findProfessor(name,"MCPROF_COMPARE",sendMessage);
+                        });
                 });
             })(index);
         }
@@ -24,30 +35,21 @@ var content = (function(){
         var message = {};
         var _names = names.split(" ");
         
+        //some names are comma delimited on Minerva so it's not easy to search for a single prof
         if(names.search(",") > -1)
         {
-            console.info("No support for multiple names yet");
-        }
-        
-        if(_names.length == 2)
-        {
-            message.query = names;
-            message.type = "PROF";
-            message.action = action;
-            callback(message);
+            alert("No support for multiple names yet");
         }
         
         //middle names can be ignored since RMP seems to use only first and last names for their records
-        if(_names.length == 3)
+        if(_names.length >= 2)
         {
-            //fullName = first + last
-            var fullName = _names[0] +" "+ _names[2];
+            var fullName = _names[0]+" "+_names[_names.length - 1]; //Just get first and last name
             message.query = fullName;
             message.type = "PROF";
             message.action = action;
             callback(message);
         }
-        //if more than 3 chunks then what?
     }
 
     //when message is sent to the background script, show the loading screen
@@ -95,7 +97,6 @@ var content = (function(){
         addRatings:function(ratings,cardId)
         {
             var el = document.getElementById(cardId.toLowerCase());
-            //Todo add type key for error or details
             if(typeof ratings === "object" && ratings.type == "RESULTS")
             {
                 el.querySelector(".prof-name").innerHTML = ratings["name"];
@@ -144,6 +145,7 @@ var content = (function(){
             var el = document.getElementById(id);
             if(el && el.classList.contains("mcprof"))
             {
+                console.log(el+" exists");
                 reject();
                 return;
             }
