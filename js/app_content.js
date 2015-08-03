@@ -126,10 +126,8 @@ var content = (function(){
         },
         clearError:function(id)
         {
-            console.log("Clearing error");
             var _id = id.toLowerCase();
             var el = document.getElementById(_id);
-            console.log(el);
             var errorEl = el.querySelector(".mcprof-error");
             var errorText = el.querySelector(".mcprof-text");
             var search = el.querySelector(".mcprof-search");
@@ -142,11 +140,9 @@ var content = (function(){
     function addCard(id)
     {
         var promise = new Promise(function(resolve,reject){
-            console.log("Adding card");
             var el = document.getElementById(id);
             if(el && el.classList.contains("mcprof"))
             {
-                console.log(el+" exists");
                 reject();
                 return;
             }
@@ -159,11 +155,9 @@ var content = (function(){
                     divContainer.setAttribute("id",id);
                     document.body.appendChild(divContainer);
                     var card = divContainer.querySelector(".mcprof");
-                    console.log(divContainer);
                     //search handler for error page search
                     card.querySelector(".mcprof-search").addEventListener("keyup",function(e){
                         var el = e.target;
-                        console.log(e.keyCode);
                         if(e.keyCode == 13)
                         {
                             content.sendMessage({
