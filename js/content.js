@@ -1,5 +1,4 @@
 chrome.runtime.onMessage.addListener(function(msg,sender,senderResp){
-    console.log(msg);
     if(msg.type == "POPUP" && msg.action == "MCPROF_SEARCH")
     {
         content.findProfessor(msg.query,msg.action,content.sendMessage);
