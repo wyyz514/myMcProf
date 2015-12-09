@@ -2,7 +2,7 @@
     "name":"myMcProf",
     "description":"Chrome extension that makes it easier to search McGill professors' ratings. Data gotten from http://www.ratemyprofessors.com",
     "manifest_version":2,
-    "version":"0.0.1",
+    "version":"0.0.2",
     "icons":{
         "38":"img/logo.png"
     },

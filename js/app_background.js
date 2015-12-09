@@ -93,9 +93,11 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
         {
             (function(i){
                 var tempArr = _profOverall[i].innerText.split("\n");
-                if(tempArr[0].indexOf(" ") > -1)
-                    tempArr[0] = tempArr[0].replace(" ","_");
-                message[tempArr[0]] = tempArr[1];
+                tempArr[0] = tempArr[0].replace(/[.,']/g," ");
+                tempArr[0] = tempArr[0].replace(/\s{1,}/g,"_");
+              console.log(tempArr);
+                if(tempArr[0].indexOf(" ") == -1 || tempArr[0].indexOf(".") == -1)
+                  message[tempArr[0]] = tempArr[1];
             })(index);
         }
 
@@ -106,7 +108,7 @@ var baseURL = "http://www.ratemyprofessors.com/search.jsp"+"?queryoption=HEADER&
                 message[tempArr[0]] = tempArr[1];
             })(index);
         }
-        
+      console.log(message);
         message.action = action;
         message.type = "RESULTS";
         message.name = query;
